@@ -6,6 +6,7 @@ struct Pixel
 
 
 #include <vector>
+#include <iostream>
 using namespace std;
 
 class Buffer{
@@ -29,11 +30,21 @@ class Buffer{
         }
     }
 
-    void UpdatePixel(int x, int y){
-        backBuffer[y][x]
+    void UpdatePixel(int x, int y, int luminosity){
+        backBuffer[y][x].luminosity = luminosity;
     }
 
     void SwapBuffer(){
         frontBuffer = backBuffer;
+    }
+
+    void PrintBuffer(){
+        enum char* lumToken {"a","@","B","%","8","&","W","M","#","*","o","a","h","k","b","d","p","q","w","m","Z","O","0","Q","L","C","J","U","Y","X","z","c","v","u","n","x","r","j","f","t","/","\\","|","(",")","1","{","}","[","]","?","-","_","+","~","<",">","i","!","l","I",";",":",",","\"","^","`","'","."};
+        for (int y = 0; y < height; y++){
+            for (int x = 0; x < width; x++){
+                printf("%d", frontBuffer[y][x].luminosity)
+            }
+            cout << endl;
+        }
     }
 };
