@@ -60,10 +60,17 @@ void Buffer::PrintPixel(int x, int y){
     printf("%d", frontBuffer[y][x].luminosity);
 }
 
-void Buffer::PrintBufferData(){
+void Buffer::PrintBufferData(bool printZero){
     for (int y = 0; y < height; y++){
         for (int x = 0; x < width; x++){
-            printf("%d", frontBuffer[y][x].luminosity);
+            if (printZero)
+                printf("%d", frontBuffer[y][x].luminosity);
+            else{
+                if (frontBuffer[y][x].luminosity == 0)
+                    printf(" ");
+                else
+                printf("%d", frontBuffer[y][x].luminosity);
+        }
         }
         printf("\n");
     }

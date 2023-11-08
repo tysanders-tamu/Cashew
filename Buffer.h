@@ -16,7 +16,7 @@ public:
     void ClearBuffer();
     void FillBuffer();
     void PrintPixel(int x, int y);
-    void PrintBufferData();
+    void PrintBufferData(bool printZero = false);
 public:
     int width, height;
 private:
