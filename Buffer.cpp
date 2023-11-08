@@ -1,50 +1,70 @@
-struct Pixel
-{
-    int luminosity = 0;
-};
+#include "Buffer.h"
 
 
+//constructor
+Buffer::Buffer(int width, int height){
+    this->width = width;
+    this->height = height;
 
-#include <vector>
-#include <iostream>
-using namespace std;
-
-class Buffer{
-    private:
-        vector<vector<Pixel>> frontBuffer;
-        vector<vector<Pixel>> backBuffer;
-
-    public:
-        int width, height;
-
-    Buffer(int width, int height){
-        this->width = width;
-        this->height = height;
-
-        //itialize the buffers with pixels objects
-        for (int y = 0; y < height; y++){
-            for (int x = 0; x < width; x++){
-                frontBuffer[y][x] = Pixel();
-                backBuffer[y][x] = Pixel();
-            }
+    //itialize the buffers with pixels objects
+    for (int y = 0; y < height; y++){
+        frontBuffer.push_back(vector<Pixel>());
+        backBuffer.push_back(vector<Pixel>());
+        for (int x = 0; x < width; x++){
+            frontBuffer[y].push_back(Pixel());
+            backBuffer[y].push_back(Pixel());
         }
     }
+}
 
-    void UpdatePixel(int x, int y, int luminosity){
-        backBuffer[y][x].luminosity = luminosity;
+//destructor
+Buffer::~Buffer(){}
+
+void Buffer::UpdatePixel(int x, int y, int luminosity){
+    backBuffer[y][x].luminosity = luminosity;
+}
+
+void Buffer::SwapBuffer(){
+    swap(frontBuffer, backBuffer);
+}
+
+void Buffer::PrintBuffer(){
+    char LumtoChar[] = " .,~*il#@";
+    printf("\033[H");
+
+    for (int y = 0; y < height; y++){
+        for (int x = 0; x < width; x++){
+            printf("%c", LumtoChar[frontBuffer[y][x].luminosity]);
+        }
+        printf("\n");
     }
+}
 
-    void SwapBuffer(){
-        frontBuffer = backBuffer;
-    }
-
-    void PrintBuffer(){
-        enum char* lumToken {"a","@","B","%","8","&","W","M","#","*","o","a","h","k","b","d","p","q","w","m","Z","O","0","Q","L","C","J","U","Y","X","z","c","v","u","n","x","r","j","f","t","/","\\","|","(",")","1","{","}","[","]","?","-","_","+","~","<",">","i","!","l","I",";",":",",","\"","^","`","'","."};
-        for (int y = 0; y < height; y++){
-            for (int x = 0; x < width; x++){
-                printf("%d", frontBuffer[y][x].luminosity)
-            }
-            cout << endl;
+void Buffer::ClearBuffer(){
+    for (int y = 0; y < height; y++){
+        for (int x = 0; x < width; x++){
+            backBuffer[y][x].luminosity = 0;
         }
     }
-};
+}
+
+void Buffer::FillBuffer(){
+    for (int y = 0; y < height; y++){
+        for (int x = 0; x < width; x++){
+            backBuffer[y][x].luminosity = 8;
+        }
+    }
+}
+
+void Buffer::PrintPixel(int x, int y){
+    printf("%d", frontBuffer[y][x].luminosity);
+}
+
+void Buffer::PrintBufferData(){
+    for (int y = 0; y < height; y++){
+        for (int x = 0; x < width; x++){
+            printf("%d", frontBuffer[y][x].luminosity);
+        }
+        printf("\n");
+    }
+}
