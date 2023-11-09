@@ -33,29 +33,67 @@ void Flock::DrawFlock(Buffer& buffer){
 //seperation
 //going to run into processing time issues with this, need to seperate into chunks or multithread
 void Flock::Seperation(){
-    //seperate into chunks
-    float avoidFactor = 0.5;
 
-    for (auto Boid: boids){
+    //seperate into chunks
+    // float avoidFactor = 0.0006;
+    // float centerFactor = 0.008;
+    // float alignFactor = 0.0006;
+    float avoidFactor = 0.0006;
+    float centerFactor = 0.000008;
+    float alignFactor = 0.0006;
+
+    for (auto& Boid: boids){
         Boid.close_dx = 0;
         Boid.close_dy = 0;
-        for (auto otherBoid: boids){
+        Boid.x_posAvg = 0;
+        Boid.y_posAvg = 0;
+        Boid.neighbors = 0;
+        Boid.x_velAvg, Boid.y_velAvg = 0;
+        for (auto& otherBoid: boids){
             if (Boid.id == otherBoid.id) continue;
 
+            //seperation
             float distance = Boid.Distance(Boid.x, Boid.y, otherBoid.x, otherBoid.y);
-            if (distance < 10){
+            if (distance < 2){
+                Boid.close_dx += (Boid.x - otherBoid.x);
+                Boid.close_dy += (Boid.y - otherBoid.y);
+            }
+            if (distance < 1){
                 Boid.close_dx += (Boid.x - otherBoid.x);
                 Boid.close_dy += (Boid.y - otherBoid.y);
             }
 
-            Boid.vx += Boid.close_dx * avoidFactor;
-            Boid.vy += Boid.close_dy * avoidFactor;
+            if (distance < 15){
+                Boid.x_posAvg += otherBoid.x;
+                Boid.y_posAvg += otherBoid.y;
+                Boid.x_velAvg += otherBoid.vx;
+                Boid.y_velAvg += otherBoid.vy;
+                Boid.neighbors++;
+            }
+
         }
+        //back to boid
+        Boid.vx += Boid.close_dx * avoidFactor;
+        Boid.vy += Boid.close_dy * avoidFactor;
+
+        //cohesion
+        if (Boid.neighbors > 0){
+            Boid.x_posAvg /= Boid.neighbors;
+            Boid.y_posAvg /= Boid.neighbors;
+
+            Boid.x_velAvg /= Boid.neighbors;
+            Boid.y_velAvg /= Boid.neighbors;
+
+            Boid.vx += (Boid.x_posAvg - Boid.x) * centerFactor;
+            Boid.vy += (Boid.y_posAvg - Boid.y) * centerFactor;
+
+            Boid.vx += (Boid.x_velAvg - Boid.vx) * alignFactor;
+            Boid.vy += (Boid.y_velAvg - Boid.vy) * alignFactor;
+        }
+
+        // Boid.UpdateVelocity(Boid.close_dx * avoidFactor, Boid.close_dy * avoidFactor);
     }
 
 }
 
 //alignment
-
-
-//cohesion

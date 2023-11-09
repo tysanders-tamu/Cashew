@@ -13,12 +13,15 @@ public:
     float Distance(float x1, float y1, float x2, float y2);
     Boid(int widthScreen, int heightScreen, int id);
     ~Boid();
-    void UpdateVelocity();
+    void UpdateVelocity(float influenceX = 0, float influenceY = 0);
     void UpdatePosition();
     void DetermineDirection();
 
 public:
     float close_dx, close_dy;
+    float x_posAvg, y_posAvg;
+    float x_velAvg, y_velAvg;
+    int neighbors;
     float x, y;
     float vx, vy;
     float ax, ay;
@@ -26,6 +29,8 @@ public:
 private:
     int widthScreen;
     int heightScreen;
+    float maxSpeed = 2.5;
+    float minSpeed = .5;
 };
 
 #endif // BOID_H
