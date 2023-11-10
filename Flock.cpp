@@ -13,7 +13,6 @@ Flock::~Flock(){}
 
 void Flock::UpdateFlock(){
     for (int i = 0; i < boids.size(); i++){
-        boids[i].UpdateVelocity();
         boids[i].DetermineDirection();
         Seperation();
         boids[i].UpdatePosition();
@@ -37,20 +36,19 @@ void Flock::Seperation(){
     float avoidFactor = 0.5;
 
     for (auto Boid: boids){
-        Boid.close_dx = 0;
-        Boid.close_dy = 0;
+        Boid.close_dx = 0.0;
+        Boid.close_dy = 0.0;
         for (auto otherBoid: boids){
             if (Boid.id == otherBoid.id) continue;
 
             float distance = Boid.Distance(Boid.x, Boid.y, otherBoid.x, otherBoid.y);
             if (distance < 10){
-                Boid.close_dx += (Boid.x - otherBoid.x);
-                Boid.close_dy += (Boid.y - otherBoid.y);
+                Boid.close_dx += (float)(Boid.x - otherBoid.x);
+                Boid.close_dy += (float)(Boid.y - otherBoid.y);
             }
-
-            Boid.vx += Boid.close_dx * avoidFactor;
-            Boid.vy += Boid.close_dy * avoidFactor;
         }
+        Boid.vx += Boid.close_dx * avoidFactor;
+        Boid.vy += Boid.close_dy * avoidFactor;
     }
 
 }

@@ -4,9 +4,9 @@
 
 Boid::Boid(int widthScreen, int heightScreen, int id){
     vx,vy,ax,ay, close_dx, close_dy = 0;
-    vx = 1;
-    vy = 1;
     srand(chrono::high_resolution_clock::now().time_since_epoch().count());
+    vx = (rand() % 2 ? 1 : -1);
+    vy = (rand() % 2 ? 1 : -1);
     x = rand() % widthScreen-10;
     y = rand() % heightScreen-10;
     this->id = id;
@@ -37,17 +37,17 @@ void Boid::DetermineDirection(){
         vx = -vx;
         vy = -vy;
     } else {
-        // srand(chrono::high_resolution_clock::now().time_since_epoch().count());
-        // float rotationAngle = rand()%5 + 5;
-        // rotationAngle = rotationAngle * 3.141 / 180;
+        srand(chrono::high_resolution_clock::now().time_since_epoch().count());
+        float rotationAngle = rand()%5 + 5;
+        rotationAngle = rotationAngle * 3.141 / 180;
         
-        // rotationAngle *= rand() % 2 == 0 ? 1 : -1; //left or right
+        rotationAngle *= rand() % 2 == 0 ? 1 : -1; //left or right
         
-        // float _vy = vy;
-        // float _vx = vx;
+        float _vy = vy;
+        float _vx = vx;
 
-        // vx = _vx * cos(rotationAngle) - _vy * sin(rotationAngle);
-        // vy = _vx * sin(rotationAngle) + _vy * cos(rotationAngle);
+        vx = _vx * cos(rotationAngle) - _vy * sin(rotationAngle);
+        vy = _vx * sin(rotationAngle) + _vy * cos(rotationAngle);
     }
 }
  
