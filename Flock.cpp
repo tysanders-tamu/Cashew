@@ -33,12 +33,6 @@ void Flock::DrawFlock(Buffer& buffer){
 //going to run into processing time issues with this, need to seperate into chunks or multithread
 void Flock::Seperation(){
 
-<<<<<<< HEAD
-    for (auto Boid: boids){
-        Boid.close_dx = 0.0;
-        Boid.close_dy = 0.0;
-        for (auto otherBoid: boids){
-=======
     //seperate into chunks
     // float avoidFactor = 0.0006;
     // float centerFactor = 0.008;
@@ -55,20 +49,10 @@ void Flock::Seperation(){
         Boid.neighbors = 0;
         Boid.x_velAvg, Boid.y_velAvg = 0;
         for (auto& otherBoid: boids){
->>>>>>> 5d6c202ef3e08cff18eb504bd71420fe8a54e6e1
             if (Boid.id == otherBoid.id) continue;
 
             //seperation
             float distance = Boid.Distance(Boid.x, Boid.y, otherBoid.x, otherBoid.y);
-<<<<<<< HEAD
-            if (distance < 10){
-                Boid.close_dx += (float)(Boid.x - otherBoid.x);
-                Boid.close_dy += (float)(Boid.y - otherBoid.y);
-            }
-        }
-        Boid.vx += Boid.close_dx * avoidFactor;
-        Boid.vy += Boid.close_dy * avoidFactor;
-=======
             if (distance < 2){
                 Boid.close_dx += (Boid.x - otherBoid.x);
                 Boid.close_dy += (Boid.y - otherBoid.y);
@@ -107,7 +91,6 @@ void Flock::Seperation(){
         }
 
         // Boid.UpdateVelocity(Boid.close_dx * avoidFactor, Boid.close_dy * avoidFactor);
->>>>>>> 5d6c202ef3e08cff18eb504bd71420fe8a54e6e1
     }
 
 }
