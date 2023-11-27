@@ -4,6 +4,11 @@
 
 Boid::Boid(int widthScreen, int heightScreen, int id){
     vx,vy,ax,ay, close_dx, close_dy = 0;
+<<<<<<< HEAD
+=======
+    vx = 1.0;
+    vy = 1.0;
+>>>>>>> 5d6c202ef3e08cff18eb504bd71420fe8a54e6e1
     srand(chrono::high_resolution_clock::now().time_since_epoch().count());
     vx = (rand() % 2 ? 1 : -1);
     vy = (rand() % 2 ? 1 : -1);
@@ -20,9 +25,19 @@ float Boid::Distance(float x1, float y1, float x2, float y2){
     return sqrt(pow(x2-x1,2)+pow(y2-y1,2));
 }
 
-void Boid::UpdateVelocity(){
-    vx += ax;
-    vy += ay;
+void Boid::UpdateVelocity(float influenceX, float influenceY){
+    vx += ax + influenceX;
+    vy += ay + influenceY;
+
+    //limit velocity
+    float speed = sqrt(vx*vx + vy*vy);
+    if (speed > maxSpeed){
+        vx = (vx / speed) * maxSpeed;
+        vy = (vy / speed) * maxSpeed;
+    } else if (speed < minSpeed){
+        vx = (vx / speed) * minSpeed;
+        vy = (vy / speed) * minSpeed;
+    }
 }
 
 void Boid::UpdatePosition(){
@@ -33,12 +48,16 @@ void Boid::UpdatePosition(){
 //determine distance to any obstacle
 void Boid::DetermineDirection(){
     //if outside of bounds
-    if (x <= -10 || x >= widthScreen+10 || y <= -10 || y >= heightScreen+10){
+    if (x <= -5 || x >= widthScreen+5 || y <= -5 || y >= heightScreen+5){
         vx = -vx;
         vy = -vy;
     } else {
         srand(chrono::high_resolution_clock::now().time_since_epoch().count());
+<<<<<<< HEAD
         float rotationAngle = rand()%5 + 5;
+=======
+        float rotationAngle = rand()%10;
+>>>>>>> 5d6c202ef3e08cff18eb504bd71420fe8a54e6e1
         rotationAngle = rotationAngle * 3.141 / 180;
         
         rotationAngle *= rand() % 2 == 0 ? 1 : -1; //left or right

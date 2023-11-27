@@ -4,7 +4,7 @@
 struct Pixel
 {
     //may be 0-8
-    int luminosity = 0;
+    int luminosity = 1;
 };
 
 #endif
